@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listing Kereta</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; text-align: center; }
+        h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        .subtitle { opacity: 0.9; font-size: 1.1rem; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .car-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .car-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .car-card:hover { transform: translateY(-5px); }
+        .car-image { width: 100%; height: 200px; object-fit: cover; background: #ddd; }
+        .car-info { padding: 1.5rem; }
+        .car-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 0.5rem; color: #2d3748; }
+        .car-price { color: #667eea; font-size: 1.5rem; font-weight: bold; margin: 0.5rem 0; }
+        .car-details { display: flex; gap: 1rem; color: #718096; font-size: 0.9rem; margin-bottom: 1rem; }
+        .car-stock { background: #e6fffa; color: #234e52; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+        .stock-available { background: #c6f6d5; color: #22543d; }
+        .stock-limited { background: #fed7d7; color: #742a2a; }
+        .stock-sold { background: #e2e8f0; color: #4a5568; }
+        .contact-btn { background: #667eea; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; width: 100%; transition: background 0.3s; }
+        .contact-btn:hover { background: #5568d3; }
+        footer { text-align: center; padding: 2rem; color: #718096; margin-top: 3rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚗 Listing Kereta Import</h1>
+        <p class="subtitle">Kereta berkualiti, harga berhemat - Hubungi: 019-9649647 (Faruki)</p>
+    </header>
+    
+    <div class="container">
+        <div class="car-grid" id="carGrid">
+            <!-- Cars will be loaded here -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Faruki Car Listing. WhatsApp: <a href="https://wa.me/60199649647">019-9649647</a></p>
+    </footer>
+
+    <script>
+        // Sample car data - replace with actual data from your Google Sheet
+        const cars = [
+            {
+                id: 1,
+                title: "Toyota Vellfire 2.5",
+                year: "2020",
+                price: "RM 185,000",
+                mileage: "68,000 km",
+                stock: "available",
+                image: "https://via.placeholder.com/400x200/667eea/ffffff?text=Vellfire"
+            },
+            {
+                id: 2,
+                title: "Honda Odyssey 2.0",
+                year: "2019",
+                price: "RM 175,000",
+                mileage: "72,000 km",
+                stock: "limited",
+                image: "https://via.placeholder.com/400x200/764ba2/ffffff?text=Odyssey"
+            },
+            {
+                id: 3,
+                title: "Nissan Elgrand 3.5",
+                year: "2021",
+                price: "RM 195,000",
+                mileage: "45,000 km",
+                stock: "available",
+                image: "https://via.placeholder.com/400x200/48bb78/ffffff?text=Elgrand"
+            }
+        ];
+
+        function getStockClass(stock) {
+            if (stock === 'available') return 'stock-available';
+            if (stock === 'limited') return 'stock-limited';
+            return 'stock-sold';
+        }
+
+        function getStockText(stock) {
+            if (stock === 'available') return 'Stok Ada';
+            if (stock === 'limited') return 'Stok Terhad';
+            return 'Sold Out';
+        }
+
+        function renderCars() {
+            const grid = document.getElementById('carGrid');
+            grid.innerHTML = cars.map(car => `
+                <div class="car-card">
+                    <img src="${car.image}" alt="${car.title}" class="car-image" loading="lazy">
+                    <div class="car-info">
+                        <h3 class="car-title">${car.title}</h3>
+                        <div class="car-details">
+                            <span>${car.year}</span>
+                            <span>${car.mileage}</span>
+                        </div>
+                        <div class="car-price">${car.price}</div>
+                        <span class="car-stock ${getStockClass(car.stock)}">${getStockText(car.stock)}</span>
+                        <button class="contact-btn" onclick="contactWhatsApp('${car.title}')">
+                            📱 Hubungi untuk Info Lanjut
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function contactWhatsApp(carTitle) {
+            const message = encodeURIComponent(`Saya berminat dengan ${carTitle}. Boleh dapat info lebih lanjut?`);
+            window.open(`https://wa.me/60199649647?text=${message}`, '_blank');
+        }
+
+        // Initialize
+        renderCars();
+    </script>
+</body>
+</html>
